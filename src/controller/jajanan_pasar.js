@@ -1,20 +1,33 @@
-const getJajanan_pasar = (req, res) => {
-  const data = {
-    id: "1",
-    product_name: "Dadar Gulung",
-    price: 3000,
-  };
-  res.json({
-    data: data,
-  });
+const jajananPasarModules = require("../models/jajanan_pasar");
+
+const getJajanan_pasar = async (req, res) => {
+  try {
+    const [data] = await jajananPasarModules.getJajanan_pasar();
+    res.json({
+      data: data,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "server error",
+      serverMessage: error,
+    });
+  }
 };
 
-const createNewProduct = (req, res) => {
-  console.log(req.body);
-  res.json({
-    product_name: "Onde-Onde",
-    data: req.body,
-  });
+const createNewProduct = async (req, res) => {
+  const { body } = req;
+  try {
+    await jajananPasarModules.createNewProduct(body);
+    res.json({
+      message: "CREATE NEW PRODUCT SUCCESS",
+      data: body,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "server error",
+      serverMessage: error,
+    });
+  }
 };
 
 const updateData = (req, res) => {
