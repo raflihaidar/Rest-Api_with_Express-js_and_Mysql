@@ -18,7 +18,7 @@ const createNewProduct = async (req, res) => {
   const { body } = req;
   try {
     await jajananPasarModules.createNewProduct(body);
-    res.json({
+    res.status(201).json({
       message: "CREATE NEW PRODUCT SUCCESS",
       data: body,
     });
@@ -30,26 +30,41 @@ const createNewProduct = async (req, res) => {
   }
 };
 
-const updateData = (req, res) => {
+const updateData = async (req, res) => {
   const { id } = req.params;
-  console.log(id);
-  res.json({
-    message: "Update Products Success",
-    data: req.body,
-  });
+  const { body } = req;
+  try {
+    await jajananPasarModules.updateData(body, id);
+    res.json({
+      message: "Update Products Success",
+      data: body,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "server error",
+      serverMessage: error,
+    });
+  }
 };
 
-const deleteProducts = (req, res) => {
+const deleteProducts = async (req, res) => {
   const { id } = req.params;
-  console.log(id);
-  res.json({
-    message: "Delete Products Success",
-    data: {
-      id: "1",
-      name: "Dadar Gulung",
-      price: 3000,
-    },
-  });
+  try {
+    await jajananPasarModules.deleteProducts(id);
+    res.json({
+      message: "Delete Products Success",
+      data: {
+        id: "1",
+        name: "Dadar Gulung",
+        price: 3000,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "server error",
+      serverMessage: error,
+    });
+  }
 };
 
 module.exports = {
